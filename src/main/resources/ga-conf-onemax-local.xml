@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!-- Hadoop job properties -->
+	<property>
+		<name>io.serializations</name>
+		<value>org.apache.hadoop.io.serializer.JavaSerialization,org.apache.hadoop.io.serializer.WritableSerialization</value>
+	</property>
+
+	<property>
+		<name>mapreduce.inputformat.class</name>
+		<value>edu.ibu.ga.mapreduce.GaInputFormat</value>
+		<description>Input format class</description>
+	</property>
+
+	<property>
+		<name>mapreduce.outputformat.class</name>
+		<value>edu.ibu.ga.mapreduce.GaOutputFormat</value>
+		<description>Output format class</description>
+	</property>
+
+	<property>
+		<name>mapreduce.map.class</name>
+		<value>edu.ibu.ga.mapreduce.GaMapper</value>
+		<description>Mapper class</description>
+	</property>
+
+	<property>
+		<name>mapreduce.partitioner.class</name>
+		<value>edu.ibu.ga.mapreduce.RandomPartitioner</value>
+		<description>Partitioner class</description>
+	</property>
+
+	<property>
+		<name>mapreduce.reduce.class</name>
+		<value>edu.ibu.ga.mapreduce.GaReducer</value>
+		<description>Reducer class</description>
+	</property>
+
+	<property>
+		<name>mapred.output.value.class</name>
+		<value>edu.ibu.ga.mapreduce.domain.Chromosome</value>
+	</property>
+
+	<property>
+		<name>mapred.output.key.class</name>
+		<value>org.apache.hadoop.io.NullWritable</value>
+	</property>
+
+	<property>
+		<name>mapred.mapoutput.value.class</name>
+		<value>edu.ibu.ga.mapreduce.domain.Chromosome</value>
+	</property>
+
+	<property>
+		<name>mapred.mapoutput.key.class</name>
+		<value>org.apache.hadoop.io.NullWritable</value>
+	</property>
+
+	<property>
+		<name>mapred.reduce.tasks</name>
+		<value>2</value>
+		<description>Number of reducer tasks</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.number.of.mappers</name>
+		<value>2</value>
+		<description>Number of parallel tasks to run</description>
+	</property>
+
+	<property>
+		<name>mapred.input.dir</name>
+		<value>/home/dino/Dropbox/phd/workspace/ga-mapred/src/main/resources/data/input/</value>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.output.location</name>
+		<value>/home/dino/Dropbox/phd/workspace/ga-mapred/src/main/resources/data/output/</value>
+		<description>Tmp file location</description>
+	</property>
+	
+	<property>
+		<name>ga.mapreduce.best.record.location</name>
+		<value>/home/dino/Dropbox/phd/workspace/ga-mapred/src/main/resources/data/best/</value>
+		<description>Tmp location for best chromosome</description>
+	</property>
+	
+	<!-- <property> <name>ga.mapreduce.input.location</name> <value>/data/input/</value> <description>Tmp file location</description> </property> -->
+	<!-- GA properties -->
+
+	<property>
+		<name>ga.mapreduce.generate.initial.population</name>
+		<value>true</value>
+		<description>Generate initial population or read population from file.</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.window.size</name>
+		<value>10</value>
+		<description>Number of chromosomes in population of one node</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.population.size</name>
+		<value>200</value>
+		<description>Number of chromosomes in population of one node</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.chromosome.length</name>
+		<value>10</value>
+		<description>bit length of chromosome</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.chromosome.generator</name>
+		<value>edu.ibu.ga.mapreduce.logic.RandomChromosomeGenerator</value>
+		<!--<value>edu.ibu.ga.mapreduce.logic.LimitedChromosomeGenerator</value> -->
+		<description>Initial chromosome generator class</description>
+	</property>
+<!-- 
+	<property>
+		<name>ga.mapreduce.chromosome.limit</name>
+		<value>2</value>
+		<description>Initial chromosome ones limit</description>
+	</property>
+ -->
+	<property>
+		<name>ga.mapreduce.chromosome.comparator</name>
+		<value>edu.ibu.ga.mapreduce.logic.DefaultChromosomeComparator</value>
+		<description>Compare operator class</description>
+	</property>
+	
+	<property>
+		<name>ga.mapreduce.crossover.operator</name>
+		<value>edu.ibu.ga.mapreduce.logic.SinglePointCrossover</value>
+		<description>Crossover operator class</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.mutation.operator</name>
+		<value>edu.ibu.ga.mapreduce.logic.StandardMutationOperator</value>
+		<description>Crossover operator class</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.selection.operator</name>
+		<value>edu.ibu.ga.mapreduce.logic.RouleteWheelSelection</value>
+		<description>Selection operator class</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.fitness.function</name>
+		<value>edu.ibu.ga.mapreduce.logic.SimpleFitnessFunction</value>
+		<!-- <value>edu.ibu.ga.mapreduce.logic.MicroarrayFeatureSelectionANNFitnessFunction</value>  --> 
+		<description>Fitness function implementation</description>
+	</property>
+<!-- 
+	<property>
+		<name>ga.mapreduce.microarray.train.dataset</name>
+		<value>/home/dino/Dropbox/phd/workspace/ga-mapred/src/main/resources/data/test_train/SRBCT_train.arrf</value>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.microarray.test.dataset</name>
+		<value>/home/dino/Dropbox/phd/workspace/ga-mapred/src/main/resources/data/test_train/SRBCT_test.arrf</value>
+	</property>
+ -->
+	<property>
+		<name>ga.mapreduce.stop.criteria</name>
+		<value>edu.ibu.ga.mapreduce.logic.GenerationStopCriteria</value>
+		<description>Fitness function implementation</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.number.of.generations</name>
+		<value>5</value>
+		<description>Selection operator class</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.mutation.probability</name>
+		<value>0.05</value>
+		<description>Mutation probability</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.crossover.probability</name>
+		<value>0.8</value>
+		<description>Crossover probability</description>
+	</property>
+
+</configuration>

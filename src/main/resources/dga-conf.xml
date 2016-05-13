@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!-- Hadoop job properties -->
+	<property>
+		<name>io.serializations</name>
+		<value>org.apache.hadoop.io.serializer.JavaSerialization,org.apache.hadoop.io.serializer.WritableSerialization</value>
+	</property>
+
+	<property>
+		<name>mapreduce.inputformat.class</name>
+		<value>edu.ibu.ga.mapreduce.DgaInputFormat</value>
+		<description>Input format class</description>
+	</property>
+
+	<property>
+		<name>mapreduce.outputformat.class</name>
+		<value>org.apache.hadoop.mapreduce.lib.output.NullOutputFormat</value>
+		<description>Output format class</description>
+	</property>
+
+	<property>
+		<name>mapreduce.map.class</name>
+		<value>edu.ibu.ga.mapreduce.DgaMapper</value>
+		<description>Mapper class</description>
+	</property>
+
+	<property>
+		<name>mapreduce.reduce.class</name>
+		<value>edu.ibu.ga.mapreduce.DgaReducer</value>
+		<description>Reducer class</description>
+	</property>
+
+	<property>
+		<name>mapred.reduce.tasks</name>
+		<value>1</value>
+		<description>Number of reducer tasks</description>
+	</property>
+
+	<property>
+		<name>mapred.output.value.class</name>
+		<value>edu.ibu.ga.mapreduce.domain.Chromosome</value>
+	</property>
+
+	<property>
+		<name>mapred.output.key.class</name>
+		<value>org.apache.hadoop.io.NullWritable</value>
+	</property>
+
+	<property>
+		<name>mapred.mapoutput.value.class</name>
+		<value>edu.ibu.ga.mapreduce.domain.Chromosome</value>
+	</property>
+
+	<property>
+		<name>mapred.mapoutput.key.class</name>
+		<value>org.apache.hadoop.io.NullWritable</value>
+	</property>
+
+
+	<!-- GA properties -->
+	<property>
+		<name>ga.mapreduce.population.size.per.node</name>
+		<value>10</value>
+		<description>Number of chromosomes in population of one node</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.chromosome.length</name>
+		<value>12601</value>
+		<description>bit length of chromosome</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.number.of.mappers</name>
+		<value>2</value>
+		<description>Number of parallel tasks to run</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.chromosome.generator</name>
+		<!-- <value>edu.ibu.ga.mapreduce.logic.RandomChromosomeGenerator</value> -->
+		<value>edu.ibu.ga.mapreduce.logic.LimitedChromosomeGenerator</value>
+		<description>Initial chromosome generator class</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.crossover.operator</name>
+		<value>edu.ibu.ga.mapreduce.logic.SinglePointCrossover</value>
+		<description>Crossover operator class</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.mutation.operator</name>
+		<value>edu.ibu.ga.mapreduce.logic.StandardMutationOperator</value>
+		<description>Crossover operator class</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.selection.operator</name>
+		<value>edu.ibu.ga.mapreduce.logic.RouleteWheelSelection</value>
+		<description>Selection operator class</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.fitness.function</name>
+		<!-- <value>edu.ibu.ga.mapreduce.logic.SimpleFitnessFunction</value> -->
+		<value>edu.ibu.ga.mapreduce.logic.MicroarrayFeatureSelectionFitnessFunction</value>
+		<description>Fitness function implementation</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.microarray.train.dataset</name>
+		<value>/data/lung-cancer-train.arff</value>
+	</property>
+	
+	<property>
+		<name>ga.mapreduce.microarray.test.dataset</name>
+		<value>/data/lung-cancer-test.arff</value>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.stop.criteria</name>
+		<value>edu.ibu.ga.mapreduce.logic.GenerationStopCriteria</value>
+		<description>Fitness function implementation</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.number.of.generations</name>
+		<value>10</value>
+		<description>Selection operator class</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.mutation.probability</name>
+		<value>0.01</value>
+		<description>Mutation probability</description>
+	</property>
+
+	<property>
+		<name>ga.mapreduce.crossover.probability</name>
+		<value>0.8</value>
+		<description>Crossover probability</description>
+	</property>
+
+</configuration>

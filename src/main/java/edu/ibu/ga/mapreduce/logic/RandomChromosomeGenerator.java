@@ -1,0 +1,33 @@
+package edu.ibu.ga.mapreduce.logic;
+
+import org.apache.hadoop.conf.Configuration;
+
+import acm.util.RandomGenerator;
+import edu.ibu.ga.ChromosomeGenerator;
+import edu.ibu.ga.mapreduce.domain.Chromosome;
+
+public class RandomChromosomeGenerator implements ChromosomeGenerator {
+
+	private RandomGenerator randomGenerator;
+	
+	private int chromosomeLength;
+	
+	@Override
+	public Chromosome generateNextChromosome() {
+		Chromosome c = new Chromosome(chromosomeLength);
+		for(int i = 0; i<chromosomeLength; i++){
+			if(randomGenerator.nextBoolean()){
+				c.getBits().set(i);
+			}
+		}
+		return c;
+	}
+
+	@Override
+	public void init(Configuration conf) {
+		chromosomeLength = conf.getInt("ga.mapreduce.chromosome.length", 0);
+		randomGenerator = new RandomGenerator();
+		randomGenerator.setSeed(System.nanoTime());
+	}
+
+}
