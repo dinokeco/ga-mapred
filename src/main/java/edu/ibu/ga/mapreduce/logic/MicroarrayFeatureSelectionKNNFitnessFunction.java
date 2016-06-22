@@ -1,4 +1,4 @@
-package edu.ibu.ga.mapreduce.logic;
+/*package edu.ibu.ga.mapreduce.logic;
 
 import java.io.IOException;
 
@@ -117,3 +117,4 @@ public class MicroarrayFeatureSelectionKNNFitnessFunction implements FitnessFunc
 		return filter;
 	}
 }
+*/

@@ -17,6 +17,16 @@ public class Population implements Serializable {
 	private double averageFitnessDelta;
 
 	private double maxFitnessDelta;
+	
+	private int generation;
+
+	public int getGeneration() {
+		return generation;
+	}
+
+	public void setGeneration(int generation) {
+		this.generation = generation;
+	}
 
 	public Population(int size) {
 		setChromosomes(new ArrayList<Chromosome>(size));

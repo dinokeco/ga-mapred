@@ -32,8 +32,6 @@ public class RouleteWheelSelection implements SelectionOperator {
 		double randomFitnessSecondParent = gen.nextDouble(0, sumFitness);
 
 		List<Chromosome> parents = new ArrayList<Chromosome>();
-		System.out.println(population.getChromosomes().size());
-		System.out.println("#1" + randomFitnessFirstParent + " #2" + randomFitnessSecondParent + " ##" + sumFitness);
 		double fitnessSumIterator = 0;
 		for (int i = 0; i < population.getChromosomes().size(); i++) {
 			if (parents.size() == 2) {

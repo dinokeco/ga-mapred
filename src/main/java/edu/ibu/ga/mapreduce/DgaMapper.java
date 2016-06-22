@@ -43,7 +43,7 @@ public class DgaMapper extends Mapper<NullWritable, Population, NullWritable, Ch
 		mutationProbability = context.getConfiguration().getFloat("ga.mapreduce.mutation.probability", 0);
 		crossoverProbability = context.getConfiguration().getFloat("ga.mapreduce.crossover.probability", 0);
 	}
-
+	
 	@Override
 	protected void map(NullWritable key, Population value, Context context) throws IOException, InterruptedException {
 		int generation = 0;
@@ -53,10 +53,9 @@ public class DgaMapper extends Mapper<NullWritable, Population, NullWritable, Ch
 		double prevMaxFitness = 0;
 
 		Population iteratorPopulation = value;
-
 		Chromosome best = null;
-
-		while (!stopCriteria.terminate(generation, maxFitness, avgFitness, prevMaxFitness - maxFitness, prevAvgFitness - avgFitness)) {
+		
+		while (!stopCriteria.terminate(iteratorPopulation)) {
 			prevMaxFitness = maxFitness;
 			prevAvgFitness = avgFitness;
 			avgFitness = 0;
@@ -68,7 +67,7 @@ public class DgaMapper extends Mapper<NullWritable, Population, NullWritable, Ch
 				avgFitness += c.getFintess();
 				if (maxFitness < c.getFintess()) {
 					maxFitness = c.getFintess();
-					best = c;
+					best = c.deepCopy();
 				}
 			}
 
@@ -78,8 +77,14 @@ public class DgaMapper extends Mapper<NullWritable, Population, NullWritable, Ch
 			iteratorPopulation.setAverageFitness(avgFitness);
 			iteratorPopulation.setAverageFitnessDelta(avgFitness - prevAvgFitness);
 			iteratorPopulation.setMaxFitnessDelta(Math.abs(maxFitness - prevMaxFitness));
-
-			System.out.println("pop " + iteratorPopulation);
+			iteratorPopulation.setGeneration(generation);
+			
+			//System.out.println("pop avg" + iteratorPopulation.getAverageFitness());
+			System.out.println(best.getFintess() + " F#"+ best.getBits().toString());
+			
+			//context.getCounter("current-best-fitness", generation+"-"+String.valueOf(best.getFintess())).increment(0);
+			//context.getCounter("current-avg-fitness", generation+"-"+String.valueOf(iteratorPopulation.getAverageFitness())).increment(0);
+			
 			// creation of new population
 			Population nextGeneration = new Population(iteratorPopulation.getChromosomes().size());
 
@@ -95,7 +100,7 @@ public class DgaMapper extends Mapper<NullWritable, Population, NullWritable, Ch
 
 				// mutation
 				for (Chromosome c : childs) {
-					mutationOpeator.mutate(c, mutationProbability);
+					mutationOpeator.mutate(c, iteratorPopulation);
 				}
 
 				for (Chromosome c : childs) {
@@ -106,7 +111,7 @@ public class DgaMapper extends Mapper<NullWritable, Population, NullWritable, Ch
 					}
 				}
 			}
-			iteratorPopulation = nextGeneration;
+			iteratorPopulation.setChromosomes(nextGeneration.getChromosomes());
 			// report progress to JT with current generation processed
 			context.setStatus("gen " + generation);
 			context.progress();
@@ -121,5 +126,4 @@ public class DgaMapper extends Mapper<NullWritable, Population, NullWritable, Ch
 		super.cleanup(context);
 		System.out.println("cleanup done");
 	}
-
 }

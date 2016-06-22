@@ -3,6 +3,7 @@ package edu.ibu.ga.mapreduce.logic;
 import org.apache.hadoop.conf.Configuration;
 
 import edu.ibu.ga.StopCriteria;
+import edu.ibu.ga.mapreduce.domain.Population;
 
 public class GenerationStopCriteria implements StopCriteria{
 
@@ -14,8 +15,12 @@ public class GenerationStopCriteria implements StopCriteria{
 	}
 
 	@Override
+	@Deprecated
 	public boolean terminate(int generation, double maxFitnes, double averageFitnes, double maxFitnesDelta, double averageFitnesDelta) {
 		return !(generation < numberOfGenerations);
 	}
 
+	public boolean terminate(Population population) {
+		return !(population.getGeneration() < numberOfGenerations);
+	}
 }
