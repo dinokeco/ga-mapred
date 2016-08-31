@@ -6,6 +6,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.Mapper.Context;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -15,6 +16,7 @@ import edu.ibu.ga.mapreduce.domain.Population;
 import edu.ibu.ga.util.Util;
 
 
+@Ignore
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class DgaMapperTest {
 

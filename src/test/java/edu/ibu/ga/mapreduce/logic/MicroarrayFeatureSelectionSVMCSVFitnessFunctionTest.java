@@ -2,11 +2,13 @@ package edu.ibu.ga.mapreduce.logic;
 
 import org.apache.hadoop.conf.Configuration;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import edu.ibu.ga.FitnessFunction;
 import edu.ibu.ga.mapreduce.domain.Chromosome;
 
+@Ignore
 public class MicroarrayFeatureSelectionSVMCSVFitnessFunctionTest {
 
 	private FitnessFunction ff = new MicroarrayFeatureSelectionSVMCSVFitnessFunction();

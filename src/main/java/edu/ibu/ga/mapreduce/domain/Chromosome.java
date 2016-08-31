@@ -17,6 +17,17 @@ public class Chromosome implements Serializable {
 		bits = new BitSet(length);
 		this.length = length;
 	}
+	
+	public Chromosome(int length, String values){
+		bits = new BitSet(length);
+		this.length = length;
+		
+		String[] activeBits = values.split(",");
+		for (String activeBit : activeBits) {
+			int parsedActiveBit = Integer.valueOf(activeBit.trim());
+			this.bits.set(parsedActiveBit);
+		}
+	}
 
 	public BitSet getBits() {
 		return bits;
