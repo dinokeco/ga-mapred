@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import edu.ibu.ga.ChromosomeGenerator;
-import edu.ibu.ga.mapreduce.domain.Chromosome;
 import edu.ibu.ga.mapreduce.domain.Population;
 import edu.ibu.ga.util.Util;
 

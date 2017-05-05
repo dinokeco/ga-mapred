@@ -27,8 +27,6 @@ public class DgaMapper extends Mapper<NullWritable, Population, NullWritable, Ch
 
 	private FitnessFunction fitnessFunction;
 
-	private float mutationProbability;
-
 	private float crossoverProbability;
 
 	@Override
@@ -40,7 +38,6 @@ public class DgaMapper extends Mapper<NullWritable, Population, NullWritable, Ch
 		stopCriteria = (StopCriteria) Util.initializeClass(context.getConfiguration(), context.getConfiguration().get("ga.mapreduce.stop.criteria"));
 		fitnessFunction = (FitnessFunction) Util.initializeClass(context.getConfiguration(), context.getConfiguration().get("ga.mapreduce.fitness.function"));
 
-		mutationProbability = context.getConfiguration().getFloat("ga.mapreduce.mutation.probability", 0);
 		crossoverProbability = context.getConfiguration().getFloat("ga.mapreduce.crossover.probability", 0);
 	}
 	
@@ -67,7 +64,11 @@ public class DgaMapper extends Mapper<NullWritable, Population, NullWritable, Ch
 				avgFitness += c.getFintess();
 				if (maxFitness < c.getFintess()) {
 					maxFitness = c.getFintess();
-					best = c.deepCopy();
+					if (best == null){
+						best = c.deepCopy();
+					}else if(best.getFintess() < c.getFintess()){
+						best = c.deepCopy();
+					}
 				}
 			}
 
@@ -80,7 +81,7 @@ public class DgaMapper extends Mapper<NullWritable, Population, NullWritable, Ch
 			iteratorPopulation.setGeneration(generation);
 			
 			//System.out.println("pop avg" + iteratorPopulation.getAverageFitness());
-			System.out.println(best.getFintess() + " F#"+ best.getBits().toString());
+			System.out.println(generation+ ". gen \t"+ best.getFintess() + " F#"+ best.getBits().toString());
 			
 			//context.getCounter("current-best-fitness", generation+"-"+String.valueOf(best.getFintess())).increment(0);
 			//context.getCounter("current-avg-fitness", generation+"-"+String.valueOf(iteratorPopulation.getAverageFitness())).increment(0);
@@ -90,7 +91,8 @@ public class DgaMapper extends Mapper<NullWritable, Population, NullWritable, Ch
 
 			// elitism
 			nextGeneration.addChromosome(best);
-
+			Chromosome b = best.deepCopy();
+			
 			while (nextGeneration.getChromosomes().size() < iteratorPopulation.getChromosomes().size()) {
 				// selection of parents for mating
 				List<Chromosome> parents = selectionOperator.selectForMating(iteratorPopulation);
@@ -112,6 +114,7 @@ public class DgaMapper extends Mapper<NullWritable, Population, NullWritable, Ch
 				}
 			}
 			iteratorPopulation.setChromosomes(nextGeneration.getChromosomes());
+			iteratorPopulation.addChromosome(b);
 			// report progress to JT with current generation processed
 			context.setStatus("gen " + generation);
 			context.progress();

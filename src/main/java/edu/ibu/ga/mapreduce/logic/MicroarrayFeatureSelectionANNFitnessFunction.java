@@ -21,9 +21,7 @@ import edu.ibu.ga.util.Util;
 public class MicroarrayFeatureSelectionANNFitnessFunction implements FitnessFunction {
 
 	private Instances trainInstances;
-
 	private Instances testInstances;
-
 	private MultilayerPerceptron ann;
 
 	@Override
@@ -34,15 +32,12 @@ public class MicroarrayFeatureSelectionANNFitnessFunction implements FitnessFunc
 			ArffLoader trainLoader = new ArffLoader();
 			trainLoader.setSource(trainInput);
 			trainInstances = trainLoader.getDataSet();
-
 			Path testPath = new Path(conf.get("ga.mapreduce.microarray.test.dataset"));
 			FSDataInputStream testInput = FileSystem.get(conf).open(testPath);
 			ArffLoader testLoader = new ArffLoader();
 			testLoader.setSource(testInput);
 			testInstances = testLoader.getDataSet();
-
 			ann = new MultilayerPerceptron();
-
 			System.out.println("instances loaded from HDFS");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -55,18 +50,15 @@ public class MicroarrayFeatureSelectionANNFitnessFunction implements FitnessFunc
 		try {
 			int onesCount = Util.countOnes(c);
 			Remove r = buildAttributeSelectionFilter(onesCount, c);
-
 			NumericToNominal converter = new NumericToNominal();
 			String[] options = new String[2];
 			options[0] = "-R";
 			options[1] = "1";
 			converter.setOptions(options);
-
 			r.setInputFormat(trainInstances);
 			Instances trainSubset = Filter.useFilter(trainInstances, r);
 			r.setInputFormat(testInstances);
 			Instances testSubset = Filter.useFilter(testInstances, r);
-
 			converter.setInputFormat(trainSubset);
 			trainSubset = Filter.useFilter(trainSubset, converter);
 			testSubset = Filter.useFilter(testSubset, converter);
@@ -78,10 +70,6 @@ public class MicroarrayFeatureSelectionANNFitnessFunction implements FitnessFunc
 			e.evaluateModel(ann, testSubset);
 			// accuracy
 			c.setFintess(e.correct() / (e.correct() + e.incorrect() + e.unclassified()));
-
-			System.out.println("confussion matrix:");
-			System.out.println(edu.ibu.ga.util.Util.toString(e.confusionMatrix()));
-			System.out.println("Fitness (accuracy): " + c.getFintess());
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("Failed to evaluate fitness", e);

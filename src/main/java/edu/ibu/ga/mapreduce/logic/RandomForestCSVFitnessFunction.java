@@ -20,7 +20,7 @@ public class RandomForestCSVFitnessFunction implements FitnessFunction {
 
 	private Instances testInstances;
 
-	private RandomForest tree;
+	//private RandomForest tree;
 
 	@Override
 	public void init(Configuration conf) {
@@ -33,7 +33,7 @@ public class RandomForestCSVFitnessFunction implements FitnessFunction {
 			testLoader.setSource(new URL(conf.get("ga.mapreduce.microarray.test.dataset")).openStream());
 			testInstances = testLoader.getDataSet();
 			
-			tree = new RandomForest();
+			//tree = new RandomForest();
 			System.out.println("instances loaded from HDFS");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -58,18 +58,15 @@ public class RandomForestCSVFitnessFunction implements FitnessFunction {
 
 			trainSubset.setClassIndex(0);
 			testSubset.setClassIndex(0);
-
+			RandomForest tree = new RandomForest();
+			
 			tree.buildClassifier(trainSubset);
 			Evaluation e = new Evaluation(trainSubset);
 			e.evaluateModel(tree, testSubset);
 			// accuracy
 			c.setFintess(e.correct() / (e.correct() + e.incorrect() + e.unclassified()));
+			System.out.println("\t\t"+c.getFintess()+"="+c.getBits().toString());
 
-			System.out.println(c.getBits().toString());
-			System.out.println(c.getFintess());
-			/*System.out.println("confussion matrix:");
-			System.out.println(edu.ibu.ga.util.Util.toString(e.confusionMatrix()));
-			System.out.println("Fitness (accuracy): " + c.getFintess());*/
 		} catch (Exception e) {
 			System.err.println(c.toString());
 			e.printStackTrace();

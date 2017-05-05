@@ -64,10 +64,6 @@ public class MicroarrayFeatureSelectionSVMCSVFitnessFunction implements FitnessF
 			e.evaluateModel(smo, testSubset);
 			// accuracy
 			c.setFintess(e.correct() / (e.correct() + e.incorrect() + e.unclassified()));
-
-			/*System.out.println("confussion matrix:");
-			System.out.println(edu.ibu.ga.util.Util.toString(e.confusionMatrix()));
-			System.out.println("Fitness (accuracy): " + c.getFintess());*/
 		} catch (Exception e) {
 			System.err.println(c.toString());
 			e.printStackTrace();

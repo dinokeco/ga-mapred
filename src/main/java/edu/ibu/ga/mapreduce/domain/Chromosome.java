@@ -83,5 +83,29 @@ public class Chromosome implements Serializable {
 	public int getLength() {
 		return length;
 	}
+	
+	public int countOnes() {
+		int counter = 0;
+		for (int i = 0; i < this.getLength(); i++) {
+			if (this.getBits().get(i)) {
+				counter++;
+			}
+		}
+		return counter;
+	}
+	
+	public int[] getOneIndices(){
+		int totalOnes = this.countOnes();
+		int[] indices = new int[totalOnes+1];
+		int counter = 1;
+		indices[0] = 0;
+		for (int i = 0; i < this.getLength(); i++) {
+			if (this.getBits().get(i)) {
+				indices[counter] = i+1;
+				counter++;
+			}
+		}
+		return indices;
+	}
 
 }

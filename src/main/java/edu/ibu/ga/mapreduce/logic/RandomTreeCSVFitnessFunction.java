@@ -19,6 +19,8 @@ public class RandomTreeCSVFitnessFunction implements FitnessFunction {
 	private Instances trainInstances;
 
 	private Instances testInstances;
+	
+	//private RandomTree tree;
 
 	@Override
 	public void init(Configuration conf) {
@@ -32,6 +34,8 @@ public class RandomTreeCSVFitnessFunction implements FitnessFunction {
 			testInstances = testLoader.getDataSet();
 			
 			System.out.println("instances loaded from HDFS");
+			
+			//this.tree = new RandomTree();
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Failed to load train and test dataset", e);
@@ -55,27 +59,15 @@ public class RandomTreeCSVFitnessFunction implements FitnessFunction {
 
 			trainSubset.setClassIndex(0);
 			testSubset.setClassIndex(0);
-
 			
-			RandomTree treeloc = new RandomTree();
-			treeloc.buildClassifier(trainSubset);
+			RandomTree tree = new RandomTree();
+			tree.buildClassifier(trainSubset);
 			
 			Evaluation e = new Evaluation(testSubset);
-			e.evaluateModel(treeloc, testSubset);
+			e.evaluateModel(tree, testSubset);
 			// accuracy
 			c.setFintess(e.incorrect() / (e.correct() + e.incorrect() + e.unclassified()));
-			System.out.println("   "+c.getFintess()+" f#"+c.getBits().toString());
-			
-			/*System.out.println(trainSubset.toSummaryString());
-			System.out.println(edu.ibu.ga.util.Util.toString(e.confusionMatrix()));
-			System.out.println(e.toSummaryString());*/
-			/*System.out.println("confussion matrix:");
-			System.out.println(edu.ibu.ga.util.Util.toString(e.confusionMatrix()));
-			System.out.println("Fitness (accuracy): " + c.getFintess());*/
-			// 0.8116455696202531 F#{0, 1, 2, 5, 22, 24, 28, 30, 39} 
-			//0.7930801687763713 F#{0, 1, 2, 4, 5, 8, 10, 19, 21, 27, 29, 38, 40}
-
-
+			System.out.println("\t\t"+c.getFintess()+"="+c.getBits().toString());
 		} catch (Exception e) {
 			System.err.println(c.toString());
 			e.printStackTrace();
@@ -105,4 +97,5 @@ public class RandomTreeCSVFitnessFunction implements FitnessFunction {
 		}
 		return indices;
 	}
+
 }
