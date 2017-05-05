@@ -38,7 +38,7 @@ public class DgaMapperIDSKDDTest {
 		conf.set("ga.mapreduce.fitness.function", "edu.ibu.ga.mapreduce.logic.RandomTreeCSVFitnessFunction");
 		conf.set("ga.mapreduce.stop.criteria", "edu.ibu.ga.mapreduce.logic.GenerationStopCriteria");
 		conf.set("ga.mapreduce.generations.window", "50");
-		conf.set("ga.mapreduce.number.of.generations", "1000");
+		conf.set("ga.mapreduce.number.of.generations", "5");
 		conf.set("ga.mapreduce.mutation.probability", "0.3");
 		conf.set("ga.mapreduce.crossover.probability", "0.95");
 		
